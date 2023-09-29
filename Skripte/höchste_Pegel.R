@@ -55,7 +55,7 @@ list2env(data, envir = .GlobalEnv)
 
 
 
-# Liste mit Datensätzen für Werktage, Samstage und Sonntage
+# Liste mit Datensätzen für die unterschiedlichen Jahre
 cities <- c("berlin", "dortmund", "hamburg", "koeln", "muenchen", "voerde")
 j_2018 <- list()
 j_2019 <- list()
