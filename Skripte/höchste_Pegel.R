@@ -56,7 +56,7 @@ list2env(data, envir = .GlobalEnv)
 
 
 # Liste mit Datensätzen für die unterschiedlichen Jahre
-cities <- c("berlin", "dortmund", "hamburg", "koeln", "muenchen", "voerde")
+cities <- c("landa_a", "landa_b", "landa_c", "landa_d", "landa_e", "landa_f")
 j_2018 <- list()
 j_2019 <- list()
 j_2020 <- list()
@@ -174,8 +174,8 @@ for (city in cities) {
   
 }
   
-rm(J_2018_a, berlin.2018.21.1, berlin.2018.22.1, dortmund.2018.21.1, dortmund.2018.22.1, hamburg.2018.21.1, hamburg.2018.22.1, muenchen.2018.21.1, 
-   muenchen.2018.22.1, koeln.2018.21.1, koeln.2018.22.1, voerde.2018.21.1, voerde.2018.22.1)
+rm(J_2018_a, landa_a.2018.21.1, landa_a.2018.22.1, landa_b.2018.21.1, landa_b.2018.22.1, landa_c.2018.21.1, landa_c.2018.22.1, landa_e.2018.21.1, 
+   landa_e.2018.22.1, landa_d.2018.21.1, landa_d.2018.22.1, landa_f.2018.21.1, landa_f.2018.22.1)
 
 
 # J_2019 
@@ -199,8 +199,8 @@ for (city in cities) {
   
 }
 
-rm(J_2019_a, berlin.2019.21.1, berlin.2019.22.1, dortmund.2019.21.1, dortmund.2019.22.1, hamburg.2019.21.1, hamburg.2019.22.1, muenchen.2019.21.1, 
-   muenchen.2019.22.1, koeln.2019.21.1, koeln.2019.22.1, voerde.2019.21.1, voerde.2019.22.1)
+rm(J_2019_a, landa_a.2019.21.1, landa_a.2019.22.1, landa_b.2019.21.1, landa_b.2019.22.1, landa_c.2019.21.1, landa_c.2019.22.1, landa_e.2019.21.1, 
+   landa_e.2019.22.1, landa_d.2019.21.1, landa_d.2019.22.1, landa_f.2019.21.1, landa_f.2019.22.1)
 
 
 # J_2020
@@ -233,10 +233,10 @@ for (city in cities) {
   
 }
 
-rm(J_2020_a, J_2020_b, berlin.2020.21.1, berlin.2020.22.1, dortmund.2020.21.1, dortmund.2020.22.1, hamburg.2020.21.1, hamburg.2020.22.1, muenchen.2020.21.1, 
-   muenchen.2020.22.1, koeln.2020.21.1, koeln.2020.22.1, voerde.2020.21.1, voerde.2020.22.1,
-   berlin.2020.21.2, berlin.2020.22.2, dortmund.2020.21.2, dortmund.2020.22.2, hamburg.2020.21.2, hamburg.2020.22.2, muenchen.2020.21.2, 
-   muenchen.2020.22.2, koeln.2020.21.2, koeln.2020.22.2, voerde.2020.21.2, voerde.2020.22.2)
+rm(J_2020_a, J_2020_b, landa_a.2020.21.1, landa_a.2020.22.1, landa_b.2020.21.1, landa_b.2020.22.1, landa_c.2020.21.1, landa_c.2020.22.1, landa_e.2020.21.1, 
+   landa_e.2020.22.1, landa_d.2020.21.1, landa_d.2020.22.1, landa_f.2020.21.1, landa_f.2020.22.1,
+   landa_a.2020.21.2, landa_a.2020.22.2, landa_b.2020.21.2, landa_b.2020.22.2, landa_c.2020.21.2, landa_c.2020.22.2, landa_e.2020.21.2, 
+   landa_e.2020.22.2, landa_d.2020.21.2, landa_d.2020.22.2, landa_f.2020.21.2, landa_f.2020.22.2)
 
 
 # J_2021
@@ -332,11 +332,9 @@ data <- J_2018 %>%
   full_join(J_2020) %>%
   full_join(J_2021)
 
-path.spss <- "Z:/Projekte/219.003_UBA-Sportlaerm/3_Feldarbeit/4_Hauptbefragung/Pegel_mopa/Pegel Sportanlagen NEU/"
-#path.spss <- "C:/Zeus/SynologyDrive/219.003_UBA-Sportlaerm/3_Feldarbeit/4_Hauptbefragung/Pegel_mopa/Pegel Sportanlagen/"
+path.data <- as.character(getwd())
 
-
-write.xlsx(data, paste0(path.spss,"Pegelwerte_höchste.xlsx"))
+write.xlsx(data, paste0(path.data,"Pegelwerte_höchste.xlsx"))
 
 # Datensätze für 2021 und 2022 erstellen
 data.21 <- J_2018_1 %>%

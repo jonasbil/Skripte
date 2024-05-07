@@ -1,14 +1,14 @@
-# SportlÃ¤rm: Regresssionskurven fÃ¼r BelÃ¤stigung und Pegel erstellen
+# Datenaufbereitung: Wenn es für eine ID zwei Zeilen gibt (Endung _a und _b), soll leiglich die mit Endung a beibehalten werden
 
-#--------------------------#
-# 0. Settings und DatensÃ¤tze
-#--------------------------#
+#---------------------------#
+# 1. Settings und Datensätze
+#---------------------------#
 
 # cleaning environment
 rm(list =ls()) 
 
 #--------------------------#
-## 0.1 Settings 
+## 1.1 Settings 
 #--------------------------#
 
 packages <- c("tidyverse", "dplyr", "openxlsx", "readxl", "ggplot2")
@@ -24,67 +24,15 @@ load.packages <- lapply(packages, function(x) {
 rm(packages)
 
 #--------------------------#
-# 1.  Daten einlesen ####
+#* 1.2  Daten einlesen ####
 #--------------------------#
-path.data <- "Z:/Projekte/219.003_UBA-Sportlaerm/3_Feldarbeit/4_Hauptbefragung/Pegel_mopa/Pegel Sportanlagen NEU/" #Jonas Büro
-#path.data <- "C:/Zeus/SynologyDrive/219.003_UBA-Sportlaerm/3_Feldarbeit/4_Hauptbefragung/Pegel_mopa/Pegel Sportanlagen NEU/"
-
-
-berlin.werk.21 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), startRow = 4)
-berlin.werk.22 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 2, startRow = 4)
-berlin.sa.21 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 3, startRow = 4)
-berlin.sa.22 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 4, startRow = 4)
-berlin.so.21 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 5, startRow = 4)
-berlin.so.22 <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 6, startRow = 4)
-berlin.ver <- read.xlsx(paste0(path.data,"20220826_Berlin.xlsx"), sheet = 7, startRow = 4)
-
-dortmund.werk.21 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), startRow = 4) 
-dortmund.werk.22 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 2, startRow = 4)
-dortmund.sa.21 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 3, startRow = 4, cols = 1:4)
-dortmund.sa.22 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 4, startRow = 4, cols = 1:4)
-dortmund.so.21 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 3, startRow = 4, cols = c(1:2, 5:7))
-dortmund.so.22 <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 4, startRow = 4, cols = c(1:2, 5:7))
-dortmund.ver <- read.xlsx(paste0(path.data,"20220826_Dortmund.xlsx"), sheet = 5, startRow = 4)
-
-
-hamburg.werk.21 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), startRow = 4)
-hamburg.werk.22 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 2 ,startRow = 4)
-hamburg.sa.21 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 3 ,startRow = 4, cols = 1:3)
-hamburg.sa.22 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 4 ,startRow = 4, cols = 1:3)
-hamburg.so.21 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 3 ,startRow = 4, cols = c(1:2, 4:5))
-hamburg.so.22 <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 4 ,startRow = 4, cols = c(1:2, 4:5))
-hamburg.ver <- read.xlsx(paste0(path.data,"20220826_Hamburg.xlsx"), sheet = 5 ,startRow = 4)
-
-
-koeln.werk.21 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), startRow = 4)
-koeln.werk.22 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 2, startRow = 4)
-koeln.sa.21 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 3, startRow = 4, cols = 1:3)
-koeln.sa.22 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 4, startRow = 4, cols = 1:3)
-koeln.so.21 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 3, startRow = 4, cols = c(1:2, 4:5))
-koeln.so.22 <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 4, startRow = 4, cols = c(1:2, 4:5))
-koeln.ver <- read.xlsx(paste0(path.data,"20220826_Köln.xlsx"), sheet = 5, startRow = 4)
-
-muenchen.werk.21 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), startRow = 4, cols = 1:4)
-muenchen.werk.22 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 2, startRow = 4, cols = 1:4)
-muenchen.sa.21 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 3, startRow = 4, cols = 1:4)
-muenchen.sa.22 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 4, startRow = 4, cols = 1:4)
-muenchen.so.21 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 3, startRow = 4, cols = c(1:2, 6:9)) # Zeitraum 7-9 wird nicht berücksichtigt
-muenchen.so.22 <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 4, startRow = 4, cols = c(1:2, 6:9)) # Zeitraum 7-9 wird nicht berücksichtigt
-muenchen.ver <- read.xlsx(paste0(path.data,"20220907_Muenchen.xlsx"), sheet = 5, startRow = 4) # Zeitraum 7-9 wird nicht berücksichtigt
-
-voerde.werk.21 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), startRow = 4)
-voerde.werk.22 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 2, startRow = 4)
-voerde.sa.21 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 3, startRow = 4, cols = 1:3)
-voerde.sa.22 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 4, startRow = 4, cols = 1:3)
-voerde.so.21 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 3, startRow = 4, cols = c(1:2, 4:5))
-voerde.so.22 <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 4, startRow = 4, cols = c(1:2, 4:5))
-voerde.ver <- read.xlsx(paste0(path.data,"20220826_Voerde.xlsx"), sheet = 5, startRow = 4)
+ 
+source("read_data.r")
 
 
 #-----------------------#
 # 2. Daten bearbeiten ####
 #----------------------#
-
 
 #----------------------------#
 ## 2.1 Daten aufarbeiten ####
@@ -98,13 +46,13 @@ data <- Filter(function(x) is(x, "data.frame"), mget(ls()))
 # Alle Zeilen mit "_SZ" löschen
 data <- data %>% map(~ filter(., !row_number() %in% c(1,2))) %>%
   map(~ rename(., "Messpunkt" = "X1", "ID" = "X2")) %>%
-  map(~ filter(., !grepl("_SZ", ID)))
+  map(~ filter(., !grepl("_b", ID)))
 list2env(data, envir = .GlobalEnv)
 
 
 
 # Liste mit Datensätzen für Werktage, Samstage und Sonntage
-cities <- c("berlin", "dortmund", "hamburg", "koeln", "muenchen", "voerde")
+cities <- c("land_a", "land_b", "land_c", "land_d", "land_e", "land_f")
 werktag <- list()
 samstag <- list()
 sonntag <- list()
